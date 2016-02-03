@@ -10,8 +10,7 @@
 	var routes = {
 		init: function() {
             window.addEventListener('hashchange', function(tag){
-                var hashSplit = tag.newURL.split('#')[1];
-                sections.toggle(hashSplit);
+                sections.toggle(tag.newURL.split('#')[1]);
             }, false);
 		}
 	};
