@@ -9,21 +9,21 @@
 *   Copyleft 2012, all wrongs reversed.
 */
 
-// Variable declaration
-var SANDBOX = "SANDBOX";
-var LINEAIR = "LINEAIR";
-var GPS_AVAILABLE = 'GPS_AVAILABLE';
-var GPS_UNAVAILABLE = 'GPS_UNAVAILABLE';
-var POSITION_UPDATED = 'POSITION_UPDATED';
-var REFRESH_RATE = 1000;
+(function(){
+    'use strict';
+    
+    var keyValues = {
+        LINEAR = "LINEAR",
+        GPS_AVAILABLE: 'GPS_AVAILABLE',
+        GPS_UNAVAILABLE: 'GPS_UNAVAILABLE',
+        POSITION_UPDATED: 'POSITION_UPDATED',
+        REFRESH_RATE: 1000
+    };
+})();
+
 var currentPosition = currentPositionMarker = customDebugging = debugId = map = interval =intervalCounter = updateMap = false;
 var locatieRij = markerRij = [];
 
-// Event functies - bron: http://www.nczonline.net/blog/2010/03/09/custom-events-in-javascript/ Copyright (c) 2010 Nicholas C. Zakas. All rights reserved. MIT License
-// Gebruik: ET.addListener('foo', handleEvent); ET.fire('event_name'); ET.removeListener('foo', handleEvent);
-function EventTarget(){this._listeners={}}
-EventTarget.prototype={constructor:EventTarget,addListener:function(a,c){"undefined"==typeof this._listeners[a]&&(this._listeners[a]=[]);this._listeners[a].push(c)},fire:function(a){"string"==typeof a&&(a={type:a});a.target||(a.target=this);if(!a.type)throw Error("Event object missing 'type' property.");if(this._listeners[a.type]instanceof Array)for(var c=this._listeners[a.type],b=0,d=c.length;b<d;b++)c[b].call(this,a)},removeListener:function(a,c){if(this._listeners[a]instanceof Array)for(var b=
-this._listeners[a],d=0,e=b.length;d<e;d++)if(b[d]===c){b.splice(d,1);break}}}; var ET = new EventTarget();
 
 // Test of GPS beschikbaar is (via geo.js) en vuur een event af
 function init(){
@@ -137,7 +137,7 @@ function generate_map(myOptions, canvasId){
         });
     }
 // TODO: Kleur aanpassen op het huidige punt van de tour
-    if(tourType == LINEAIR){
+    if(tourType == LINEAR){
         // Trek lijnen tussen de punten
         debug_message("Route intekenen");
         var route = new google.maps.Polyline({
@@ -176,14 +176,16 @@ function update_positie(event){
 }
 
 // FUNCTIES VOOR DEBUGGING
+var debug = {
+    function _geo_error_handler(code, message) {
+        debug_message('geo.js error ' + code + ': ' + message);
+    }
+    function debug_message(message){
+        (customDebugging && debugId)?document.getElementById(debugId).innerHTML:console.log(message);
+    }
+    function set_custom_debugging(debugId){
+        debugId = this.debugId;
+        customDebugging = true;
+    }
 
-function _geo_error_handler(code, message) {
-    debug_message('geo.js error '+code+': '+message);
-}
-function debug_message(message){
-    (customDebugging && debugId)?document.getElementById(debugId).innerHTML:console.log(message);
-}
-function set_custom_debugging(debugId){
-    debugId = this.debugId;
-    customDebugging = true;
-}
+};
