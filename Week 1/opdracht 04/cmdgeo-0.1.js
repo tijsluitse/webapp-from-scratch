@@ -13,14 +13,15 @@
     'use strict';
     
     var keyValues = {
+        //constants
         LINEAR = "LINEAR",
         GPS_AVAILABLE: 'GPS_AVAILABLE',
         GPS_UNAVAILABLE: 'GPS_UNAVAILABLE',
         POSITION_UPDATED: 'POSITION_UPDATED',
         REFRESH_RATE: 1000,
 
-        locatieRij: [],
-        markerRij: [],
+        locationRow: [],
+        markerRow: [],
 
         currentPosition: false,
         currentPositionMarker: false,
@@ -67,27 +68,27 @@
             debug_message(intervalCounter + " positie lat:" + position.coords.latitude + " long:" + position.coords.longitude);
         }
 
-        // Controleer de locaties en verwijs naar een andere pagina als we op een locatie zijn
+        // Controleer de locations en verwijs naar een andere pagina als we op een locatie zijn
         function _check_locations(event){
             // Liefst buiten google maps om... maar helaas, ze hebben alle coole functies
-            for (var i = 0; i < locaties.length; i++) {
-                var locatie = {coords:{latitude: locaties[i][3], longitude: locaties[i][4]}};
+            for (var i = 0; i < locations.length; i++) {
+                var locatie = {coords:{latitude: locations[i][3], longitude: locations[i][4]}};
 
-                if(_calculate_distance(locatie, currentPosition) < locaties[i][2]){
+                if(_calculate_distance(locatie, currentPosition) < locations[i][2]){
 
                     // Controle of we NU op die locatie zijn, zo niet gaan we naar de betreffende page
-                    if(window.location!=locaties[i][1] && localStorage[locaties[i][0]] == false){
+                    if(window.location!=locations[i][1] && localStorage[locations[i][0]] == false){
                         // Probeer local storage, als die bestaat incrementeer de locatie
                         try {
-                            (localStorage[locaties[i][0]] == false)?localStorage[locaties[i][0]]=1:localStorage[locaties[i][0]]++;
+                            (localStorage[locations[i][0]] == false)?localStorage[locations[i][0]]=1:localStorage[locations[i][0]]++;
                         } catch(error) {
                             debug_message("Localstorage kan niet aangesproken worden: "+error);
                         }
 
         // TODO: Animeer de betreffende marker
 
-                        window.location = locaties[i][1];
-                        debug_message("Speler is binnen een straal van " + locaties[i][2] + " meter van " + locaties[i][0]);
+                        window.location = locations[i][1];
+                        debug_message("Speler is binnen een straal van " + locations[i][2] + " meter van " + locations[i][0]);
                     } 
                 }
             }
@@ -141,30 +142,30 @@ function generate_map(myOptions, canvasId){
 
     var routeList = [];
     // Voeg de markers toe aan de map afhankelijk van het tourtype
-    debug_message("Locaties intekenen, tourtype is: " + tourType);
-    for (var i = 0; i < locaties.length; i++) {
+    debug_message("locations intekenen, tourtype is: " + tourType);
+    for (var i = 0; i < locations.length; i++) {
 
-        // Met kudos aan Tomas Harkema, probeer local storage, als het bestaat, voeg de locaties toe
+        // Met kudos aan Tomas Harkema, probeer local storage, als het bestaat, voeg de locations toe
         try {
-            (localStorage.visited == undefined || isNumber(localStorage.visited))?localStorage[locaties[i][0]] == false:null;
+            (localStorage.visited == undefined || isNumber(localStorage.visited))?localStorage[locations[i][0]] == false:null;
         } catch (error) {
             debug_message("Localstorage kan niet aangesproken worden: " + error);
         }
 
-        var markerLatLng = new google.maps.LatLng(locaties[i][3], locaties[i][4]);
+        var markerLatLng = new google.maps.LatLng(locations[i][3], locations[i][4]);
         routeList.push(markerLatLng);
 
-        keyValues.markerRij[i] = {};
+        keyValues.markerRow[i] = {};
         for (var attr in keyValues.locatieMarker) {
-            keyValues.markerRij[i][attr] = keyValues.locatieMarker[attr];
+            keyValues.markerRow[i][attr] = keyValues.locatieMarker[attr];
         }
-        keyValues.markerRij[i].scale = locaties[i][2]/3;
+        keyValues.markerRow[i].scale = locations[i][2]/3;
 
         var marker = new google.maps.Marker({
             position: markerLatLng,
             map: map,
-            icon: markerRij[i],
-            title: locaties[i][0]
+            icon: markerRow[i],
+            title: locations[i][0]
         });
     }
     // TODO: Kleur aanpassen op het huidige punt van de tour
@@ -184,14 +185,14 @@ function generate_map(myOptions, canvasId){
 
         // Voeg de locatie van de persoon door
         currentPositionMarker = new google.maps.Marker({
-            position: kaartOpties.center,
+            position: mapOptions.center,
             map: map,
-            icon: positieMarker,
+            icon: positionMarker,
             title: 'U bevindt zich hier'
         });
 
         // Zorg dat de kaart geupdated wordt als het POSITION_UPDATED event afgevuurd wordt
-        ET.addListener(POSITION_UPDATED, update_positie);
+        ET.addListener(keyValues.POSITION_UPDATED, update_positie);
     }
 
     function isNumber(n) {
