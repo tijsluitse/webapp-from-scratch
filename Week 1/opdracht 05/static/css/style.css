@@ -16,22 +16,15 @@ section {
     text-align: center;
 }
 
+h1 {
+    margin: 0;
+}
+
 #home {
     width: 100%;
     height: 100vh;
     background-color: #E1D1B8;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
+    display: none;
 }
 
 #bestPractices {
@@ -39,21 +32,6 @@ section {
     width: 100%;
     height: 100vh;
     background-color: #B2CAD4;
-/*
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-*/
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            -ms-grid-row-align: center;
-        align-items: center;
 }
 
 #nav {
@@ -76,4 +54,12 @@ section {
     background-color: #8D7086;
     color: #fff;
     text-decoration: none;
+}
+
+.active {
+    display: block !important;
+}
+
+.hide {
+    display: none;
 }
