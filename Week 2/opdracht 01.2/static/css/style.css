@@ -20,22 +20,39 @@ section, nav {
 #home {
     width: 100%;
     height: 100vh;
-    background-color: #E1D1B8;
+    background: #E1D1B8;
     display: none;
 }
 
 #api {
     display: none;
     width: 100%;
-    height: 100vh;
-    background-color: #B2CAD4;
+    height: 100%;
+    background: #ECF4D7;
 }
 
 #albumDetails {
     display: none;
     width: 100%;
-    height: 100vh;
-    background-color: #B2CAD4;
+    min-height: 100vh;
+    height: 100%;
+    background: #EFFFFA;
+}
+
+#albumDetails ul {
+    text-align: left;
+}
+
+.listTitle {
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    font-weight: 800;
+}
+
+
+
+
+h3 {
+    display: inline-block;
 }
 
 /*#bestPractices {
@@ -54,11 +71,6 @@ h1 {
     margin: 0;
     margin-bottom: 2em;
     font-family: LatoLight, Lato, Helvetica, Arial, sans-serif;
-}
-
-span {
-    display: block;
-    padding : 1em;
 }
 
 [role="navigation"] {
@@ -85,4 +97,19 @@ span {
 
 .active {
     display: block !important;
+}
+
+#api span {
+    display: block;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    padding-bottom: 15em;
+    margin: 0;
+}
+
+li {
+    padding: 1em;
 }

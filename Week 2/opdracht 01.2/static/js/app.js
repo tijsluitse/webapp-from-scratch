@@ -2,6 +2,7 @@
     Credits:    https://github.com/kasszz/
                 https://github.com/beemstb002/
                 https://github.com/SemBakkum/
+                https://github.com/reauv - really helped me with de details section
 */
 
 (function() {
@@ -12,7 +13,6 @@
 	var app = {
         // init method in app that calls the init method in the routes object
 		init: function() {
-            routes.init();
             
              // Routie JS - excercise #2 / switch between sections
             routie ({
@@ -22,9 +22,12 @@
                 },
                 // if the hash = api, toggle the sections to api
                 'api': function() {
+                    routes.albumList();
                     sections.toggle('api');
                 },    
-                'albumDetails': function() {
+                // toggle if hash = album/ + id
+                'album/:id': function(id) {
+                    routes.albumDetail(id);
                     sections.toggle('albumDetails');
                 }
             });
@@ -33,31 +36,75 @@
 
     // Routes object
 	var routes = {
-		init: function() {
+		albumList: function() {
+            var apiUrl = 'http://ws.audioscrobbler.com/2.0/?api_key=254649321e04bd3469d4780384df34b8&artist=sting&method=artist.getTopAlbums&format=json'; 
             
             // Get the data using microAjax
-            microAjax('http://ws.audioscrobbler.com/2.0/?api_key=254649321e04bd3469d4780384df34b8&artist=sting&method=artist.getTopAlbums&format=json', function(data){
+            microAjax(apiUrl, function(data) {
                 
+                // Parse the data
                 data = JSON.parse(data);
                 
                 //test to check if data is available
                 console.log(data);
                 
-                var songData = {
-                    title: data.topalbums.album[40].name,
-                    playcount: data.topalbums.album[40].playcount,
-                    artist: data.topalbums.album[0].artist.name,
-                    url: data.topalbums.album[40].url,
+                // filter de data and add an id to it using index
+                var filteredData = _.map(data.topalbums.album, function(post, index){
+                    return _.extend({id: index}, _.pick(post, 'name'));
+                })
+                
+                console.log(filteredData);
+                
+                var albumTitle = {
+                    topalbums: filteredData
                 };
                 
-                // Check if songdata is available
-                console.log(songData);
-                			
-				Transparency.render(document.getElementById('api'), songData);
-                Transparency.render(document.getElementById('albumDetails'), songData);
+                // nested directives
+                //directives = an object
+                var directives = {
+                    topalbums: {
+                        link: {
+                            href: function() {
+                                // link based on album id
+                                return '#album/' + this.id;
+                            }
+                        }
+                    }
+                }
+                 
+                // render albumTitle and directives
+				Transparency.render(document.getElementById('api'), albumTitle, directives);
 			})
-
-		}
+        },
+        
+        //albumDetail function with id parameter
+        albumDetail: function (id) {
+            // load api again
+            var apiUrl = 'http://ws.audioscrobbler.com/2.0/?api_key=254649321e04bd3469d4780384df34b8&artist=sting&method=artist.getTopAlbums&format=json'; 
+            
+            // Get the data using microAjax
+            microAjax(apiUrl, function(data) {
+                
+                // Parse the data
+                data = JSON.parse(data);
+                
+                //test to check if data is available
+                console.log(data);
+                
+                // filter de data and add an id to it using index
+                var filteredData = _.map(data.topalbums.album, function(post, index){
+                    return _.extend({id: index}, _.pick(post, 'name', 'playcount', 'url', 'artist'));
+                })
+                
+                console.log(filteredData);
+                
+                // album variable = the album with the id
+                var album = filteredData[id];
+                
+                // Render albumDetails
+				Transparency.render(document.getElementById('albumDetails'), album);
+			})
+        }
 	};
 
      
@@ -69,7 +116,7 @@
 			var toggleSection = document.getElementById(route);
             
             // checking if toggle works
-			console.log(toggleSection);
+			// console.log(toggleSection);
 
 			// Source For Loop Sem Bakkum: https://github.com/SemBakkum/SemBakkum.github.io/tree/master/WAFS/Week%201/Exercise%205
 			for (var i = 0; i < allSections.length; i++) {

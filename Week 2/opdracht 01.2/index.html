@@ -17,6 +17,8 @@
     <main>
         <section class="active" id="home">
             <h1>Home</h1>
+            
+            <h3>Sting album collection  </h3>
         </section>
 
         <!-- <section id="bestPractices">
@@ -25,19 +27,25 @@
 
         <!-- API section -->
         <section id="api">
-            <h1>Api</h1>
+            <h1>Sting albums</h1>
             
-            <span data-bind="title"></span>
-            <a href="#albumDetails">Album info</a>
+            <!-- bind topalbums to ul -->
+            <ul data-bind="topalbums">
+                <!-- bind the link and the name of the albums -->
+                <li><a data-bind="link"><span data-bind="name"></span></a></li>
+            </ul>
 
         </section>
+        
+        <!-- album details -->
         <section id="albumDetails">
             <h1>Album info</h1>
-            <span data-bind="title"></span>
-            <span data-bind="artist"></span>
-            <span data-bind="playcount"></span>
-            <span data-bind="url"></span>          
-        
+             <ul data-bind="topalbums">
+                <li><span class="listTitle">Album title: </span><span data-bind="name"></span></li>
+                <li><span class="listTitle">Last.fm playcount: </span><span data-bind="playcount"></span></li>
+                <li><span class="listTitle">Last.fm url: </span><span data-bind="url"></span></li>
+                <li><span class="listTitle">Artist: </span><span data-bind="artistName"></span></li>
+            </ul>
         </section>
     </main>
     
