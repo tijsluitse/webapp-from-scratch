@@ -19,9 +19,8 @@
 	var routes = {
 		init: function() {
 
-
             // Routie JS - excercise #2
-            routie({
+            routie ({
                 // Call the function when the hash == home
                 'home': function() {
                     document.getElementById('api').classList.remove('active');

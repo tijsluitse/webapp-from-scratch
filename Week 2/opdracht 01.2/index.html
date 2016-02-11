@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>Webapp from scratch</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="static/css/style.css" />
+  
+</head>
+<body>
+    <nav role="navigation">
+        
+        <a href="#home">Home</a>
+        
+        <a href="#api">Api</a>
+		
+	</nav>
+    <main>
+        <section class="active" id="home">
+            <h1>Home</h1>
+        </section>
+
+        <!-- <section id="bestPractices">
+            <h1>Best practices</h1>
+        </section> -->
+
+        <!-- API section -->
+        <section id="api">
+            <h1>Api</h1>
+            
+            <span data-bind="title"></span>
+            <a href="#albumDetails">Album info</a>
+
+        </section>
+        <section id="albumDetails">
+            <h1>Album info</h1>
+            <span data-bind="title"></span>
+            <span data-bind="artist"></span>
+            <span data-bind="playcount"></span>
+            <span data-bind="url"></span>
+            <span data-bind="title"></span>
+            
+        
+        </section>
+    </main>
+    
+<script type="text/javascript" src="static/js/microajax.minified.js"></script>
+<script type="text/javascript" src="static/js/underscore-min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/jgallen23/routie/master/dist/routie.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/leonidas/transparency/master/dist/transparency.min.js"></script>
+<script type="text/javascript" src="static/js/app.js"></script>
+<!--[if IE]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</body>
+</html>
